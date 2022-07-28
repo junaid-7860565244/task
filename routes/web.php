@@ -19,7 +19,7 @@ Route::controller(EmpController::class)->group(function () {
       Route::group(['namespace' => 'App\Http\Controllers'], function()
     {   
 
-     Route::get('/', 'EmpController')->name('home.index');
+     Route::get('/', 'EmpController')->name('login');
      Route::group(['middleware' => ['guest']], function() {
           
      Route::get('/register', 'EmpController')->name('register.show');
