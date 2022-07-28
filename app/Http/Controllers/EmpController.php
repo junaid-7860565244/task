@@ -8,7 +8,7 @@ use App\Models\Employee;
 use    App\Http\Controllers\show;
 use DB;
 
-
+//hum yaha change kr rahe hai Git me change ho jayega dekho
 class EmpController extends Controller
 
 {
