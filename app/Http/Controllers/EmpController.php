@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use View;
 use Illuminate\Http\Request;
 use App\Models\Employee;
-use    App\Http\Controllers\show;
+use  App\Http\Controllers\show;
+use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use App\Http\Requests\RegisterRequest;
+
 use DB;
 
+//hum yaha change kr rahe hai Git me change ho jayega dekho
 class EmpController extends Controller
 
 {
@@ -86,6 +93,61 @@ return back();
             return response()->json(['status'=> 'success' ,  'msg'=>'Delete Successfully!']); 
         }
 
+
+    public function index() 
+    {
+        return view('index');
+    }
+public function show()
+    {
+        return view('login');
+    }
+
+ public function login(LoginRequest $request)
+    {
+        $credentials = $request->getCredentials();
+
+        if(!Auth::validate($credentials)):
+            return redirect()->to('login')
+                ->withErrors(trans('auth.failed'));
+        endif;
+
+        $user = Auth::getProvider()->retrieveByCredentials($credentials);
+
+        Auth::login($user, $request->get('remember'));
+
+        if($request->get('remember')):
+            $this->setRememberMeExpiration($user);
+        endif;
+
+        return $this->authenticated($request, $user);
+    }
+
+ protected function authenticated(Request $request, $user) 
+    {
+        return redirect()->intended();
+    }
+
+public function perform()
+    {
+        Session::flush();
+        
+        Auth::logout();
+
+        return redirect('login');
+    }
+     public function show()
+    {
+        return view('register');
+    }
+     public function register(RegisterRequest $request) 
+    {
+        $user = User::create($request->validated());
+
+        auth()->login($user);
+
+        return redirect('/')->with('success', "Account successfully registered.");
+    }
     }
 
 
@@ -93,6 +155,22 @@ return back();
 
 
     
+   
+
+
+
+
+
+    
+    
+
+
+
+
+
+
+
+
    
 
 
